@@ -19,9 +19,10 @@ class CompetitionsPage {
   }
 
   async search(term) {
-    const searchInput = this.page.locator('input[type="search"], input[placeholder*="Search"], input[type="text"]').first();
+    const searchInput = this.page.locator('input[placeholder*="Search"], input[type="search"]').first();
     await searchInput.clear();
     await searchInput.fill(term);
+    await searchInput.press('Enter');
   }
 
   async filterByStatus(status) {
@@ -58,7 +59,7 @@ class CompetitionsPage {
   }
 
   async clickSave() {
-    await this.page.click('button:has-text("Save Competition")');
+    await this.page.click('button:has-text("Update Competition")');
   }
 
   async clickCancel() {
