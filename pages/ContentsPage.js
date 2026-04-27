@@ -23,9 +23,10 @@ class ContentsPage {
   }
 
   async search(term) {
-    const input = this.page.locator('input[type="search"], input[placeholder*="Search"], input[type="text"]').first();
+    const input = this.page.locator('input[placeholder*="Search"], input[type="search"]').first();
     await input.clear();
     await input.fill(term);
+    await input.press('Enter');
   }
 
   async clearSearch() {
@@ -89,7 +90,8 @@ class ContentsPage {
   }
 
   async fillPublishedAt(value) {
-    await this.page.fill('#publishedAt', value);
+    const normalized = value.replace(' ', 'T');
+    await this.page.fill('#publishedAt', normalized);
   }
 
   async clickCreateContent() {
@@ -97,7 +99,7 @@ class ContentsPage {
   }
 
   async clickSaveContent() {
-    await this.page.click('button:has-text("Save Content")');
+    await this.page.click('button:has-text("Update Content")');
   }
 
   async clickCancel() {
