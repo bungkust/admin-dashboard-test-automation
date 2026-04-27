@@ -84,7 +84,7 @@ class AdminUsersPage {
 
   async selectRole(role) {
     // role options: Administrator, Super Administrator
-    await this.page.selectOption('#role', role);
+    await this.page.selectOption('#role', { label: role });
   }
 
   async selectGender(gender) {

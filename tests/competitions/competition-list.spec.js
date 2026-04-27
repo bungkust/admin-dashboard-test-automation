@@ -1,11 +1,11 @@
 const { test, expect } = require('@playwright/test');
 const { CompetitionsPage } = require('../../pages/CompetitionsPage');
-const { common } = require('../../utils/common');
+const { login } = require('../../utils/common');
 
 test.describe('Competition List', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/competitions');
-  });
+    await login(page);
+    await page.goto('/competitions');});
 
   test('TC-001 - Load competition list page', async ({ page }) => {
     const competitionsPage = new CompetitionsPage(page);

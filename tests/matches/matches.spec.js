@@ -1,28 +1,27 @@
 const { test, expect } = require('@playwright/test');
 const { MatchesPage } = require('../../pages/MatchesPage');
-const { common } = require('../../utils/common');
+const { login } = require('../../utils/common');
 
 test.describe('Matches Management', () => {
-  test.use({ loggedInPage: common.loggedInPage });
 
-  test.beforeEach(async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
-    await matchesPage.goto();
+  test.beforeEach(async ({ page }) => {
+    await login(page);
+    const matchesPage = new MatchesPage(page);
+    await matchesPage.goto();});
+
+  test('TC-MATCH-001 - List matches page loads successfully', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
+    await expect(page.locator('table, table thead')).toBeVisible({ timeout: 10000 });
   });
 
-  test('TC-MATCH-001 - List matches page loads successfully', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
-    await expect(loggedInPage.locator('table, table thead')).toBeVisible({ timeout: 10000 });
-  });
-
-  test('TC-MATCH-002 - Navigate to create new match page', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-002 - Navigate to create new match page', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.clickNewMatch();
     await matchesPage.expectUrl(/\/matches\/new/);
   });
 
-  test('TC-MATCH-003 - Create match with all fields', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-003 - Create match with all fields', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Club A');
@@ -40,8 +39,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Club B');
   });
 
-  test('TC-MATCH-004 - Create match with only required fields', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-004 - Create match with only required fields', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Team X');
@@ -53,8 +52,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Team X');
   });
 
-  test('TC-MATCH-005 - Create match with empty competition shows error', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-005 - Create match with empty competition shows error', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillHomeClub('Team A');
     await matchesPage.fillAwayClub('Team B');
@@ -63,8 +62,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectValidationError();
   });
 
-  test('TC-MATCH-006 - Create match with empty home club shows error', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-006 - Create match with empty home club shows error', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillAwayClub('Team B');
@@ -73,8 +72,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectValidationError();
   });
 
-  test('TC-MATCH-007 - Create match with empty away club shows error', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-007 - Create match with empty away club shows error', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Team A');
@@ -83,8 +82,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectValidationError();
   });
 
-  test('TC-MATCH-008 - Create match with empty start time shows error', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-008 - Create match with empty start time shows error', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Team A');
@@ -93,8 +92,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectValidationError();
   });
 
-  test('TC-MATCH-009 - Cancel match creation returns to list', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-009 - Cancel match creation returns to list', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Cancelled Team');
@@ -105,8 +104,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectNotInTable('Cancelled Team');
   });
 
-  test('TC-MATCH-010 - Create match with custom stage', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-010 - Create match with custom stage', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Semi Final Team A');
@@ -119,8 +118,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Semi Final Team A');
   });
 
-  test('TC-MATCH-011 - Create match with scores', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-011 - Create match with scores', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Scoring Team A');
@@ -134,8 +133,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Scoring Team A');
   });
 
-  test('TC-MATCH-012 - Create match with location', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-012 - Create match with location', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Home Venue Team');
@@ -148,8 +147,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Home Venue Team');
   });
 
-  test('TC-MATCH-013 - Create match with meta JSON', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-013 - Create match with meta JSON', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Meta Team A');
@@ -162,8 +161,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Meta Team A');
   });
 
-  test('TC-MATCH-014 - Search match by home club', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-014 - Search match by home club', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.fillHomeClub('Searchable Team');
     await matchesPage.fillAwayClub('Opponent');
     await matchesPage.fillStartTime('2026-04-25 20:00');
@@ -173,8 +172,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Searchable Team');
   });
 
-  test('TC-MATCH-015 - Search match by away club', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-015 - Search match by away club', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Search Away Test');
@@ -187,17 +186,17 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Target Away Team');
   });
 
-  test('TC-MATCH-016 - Pagination navigation works', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
-    const nextBtn = loggedInPage.locator('button:has-text("Next"), button:has-text("→")');
+  test('TC-MATCH-016 - Pagination navigation works', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
+    const nextBtn = page.locator('button:has-text("Next"), button:has-text("→")');
     if (await nextBtn.isVisible()) {
       await matchesPage.clickNextPagination();
-      await expect(loggedInPage.locator('table')).toBeVisible();
+      await expect(page.locator('table')).toBeVisible();
     }
   });
 
-  test('TC-MATCH-017 - Delete match via row action', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-017 - Delete match via row action', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('To Delete Team');
@@ -220,8 +219,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectNotInTable('To Delete Team');
   });
 
-  test('TC-MATCH-018 - Cancel delete match does not remove from list', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-018 - Cancel delete match does not remove from list', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Cancel Delete Team');
@@ -244,8 +243,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Cancel Delete Team');
   });
 
-  test('TC-MATCH-019 - Edit match page loads with correct data', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-019 - Edit match page loads with correct data', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Edit Source Team');
@@ -267,8 +266,8 @@ test.describe('Matches Management', () => {
     }
   });
 
-  test('TC-MATCH-020 - Save edited match updates data', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-020 - Save edited match updates data', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Original Team');
@@ -293,8 +292,8 @@ test.describe('Matches Management', () => {
     }
   });
 
-  test('TC-MATCH-021 - Create match with different timezone', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-021 - Create match with different timezone', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Timezone Team A');
@@ -306,8 +305,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Timezone Team A');
   });
 
-  test('TC-MATCH-022 - Create match with all scores zero', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-022 - Create match with all scores zero', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Zero Score Home');
@@ -321,23 +320,23 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Zero Score Home');
   });
 
-  test('TC-MATCH-023 - Empty match list shows empty state', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-023 - Empty match list shows empty state', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.goto();
     await matchesPage.search('NON_EXISTENT_MATCH_12345');
     // Empty or no results state
-    await expect(loggedInPage.locator('table, text=/no match|empty|0 results/i')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('table, text=/no match|empty|0 results/i')).toBeVisible({ timeout: 5000 });
   });
 
-  test('TC-MATCH-024 - Back button returns to match list from new page', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-024 - Back button returns to match list from new page', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.clickBackToMatches();
     await matchesPage.expectOnList();
   });
 
-  test('TC-MATCH-025 - Create match with special characters in location', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-025 - Create match with special characters in location', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Special Loc Home');
@@ -350,8 +349,8 @@ test.describe('Matches Management', () => {
     await matchesPage.expectInTable('Special Loc Home');
   });
 
-  test('TC-MATCH-026 - Create multiple matches and verify list persistence', async ({ loggedInPage }) => {
-    const matchesPage = new MatchesPage(loggedInPage);
+  test('TC-MATCH-026 - Create multiple matches and verify list persistence', async ({ page }) => {
+    const matchesPage = new MatchesPage(page);
     await matchesPage.gotoNew();
     await matchesPage.fillCompetition('Champions League');
     await matchesPage.fillHomeClub('Persist Team A');

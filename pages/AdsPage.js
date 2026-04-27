@@ -63,17 +63,17 @@ class AdsPage {
 
   async selectAdType(type) {
     // type options: Banner, Interstitial, Rewarded, Native, Reels
-    await this.page.selectOption('#ad-type', type);
+    await this.page.selectOption('#ad-type', { label: type });
   }
 
   async selectAdProvider(provider) {
     // provider options: AdMob, Custom, Direct
-    await this.page.selectOption('#ad-provider', provider);
+    await this.page.selectOption('#ad-provider', { label: provider });
   }
 
   async selectPlatform(platform) {
     // platform options: Android, iOS, Web, All Platforms
-    await this.page.selectOption('#ad-platform', platform);
+    await this.page.selectOption('#ad-platform', { label: platform });
   }
 
   async fillDestinationUrl(value) {
