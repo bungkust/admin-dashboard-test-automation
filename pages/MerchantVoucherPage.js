@@ -3,6 +3,8 @@ const { expect } = require('@playwright/test');
 class MerchantVoucherPage {
   constructor(page) {
     this.page = page;
+    this._savedStartDate = null;
+    this._savedExpiryDate = null;
   }
 
   async goto() {
@@ -57,24 +59,53 @@ class MerchantVoucherPage {
   }
 
   // --- Form ---
+  // React controlled inputs — must use JS to set value + fire events
+  async _setReactValue(selector, value) {
+    await this.page.waitForSelector(selector, { timeout: 10000 });
+    await this.page.evaluate(
+      ([sel, val]) => {
+        const el = document.querySelector(sel);
+        const native = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        native.call(el, val);
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      },
+      [selector, value]
+    );
+  }
+
+  async _setReactTextarea(selector, value) {
+    await this.page.waitForSelector(selector, { timeout: 10000 });
+    await this.page.evaluate(
+      ([sel, val]) => {
+        const el = document.querySelector(sel);
+        const native = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;
+        native.call(el, val);
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      },
+      [selector, value]
+    );
+  }
+
   async fillTitle(value) {
-    await this.page.fill('#voucher-title', value);
+    await this._setReactValue('#voucher-title', value);
   }
 
   async fillDescription(value) {
-    await this.page.fill('#voucher-description', value);
+    await this._setReactTextarea('#voucher-description', value);
   }
 
   async fillGuideline(value) {
-    await this.page.fill('#voucher-guideline', value);
+    await this._setReactTextarea('#voucher-guideline', value);
   }
 
   async fillTermCondition(value) {
-    await this.page.fill('#voucher-term-condition', value);
+    await this._setReactTextarea('#voucher-term-condition', value);
   }
 
   async fillBannerUrl(value) {
-    await this.page.fill('#voucher-banner', value);
+    await this._setReactValue('#voucher-banner', value);
   }
 
   async setActive(checked) {
@@ -85,19 +116,37 @@ class MerchantVoucherPage {
   }
 
   async fillStartDate(value) {
-    await this.page.fill('#voucher-start-at', value);
+    // type="date" expects YYYY-MM-DD, no T
+    const normalized = value.replace('T', '-').substring(0, 10);
+    this._savedStartDate = normalized;
+    await this._setReactValue('#voucher-start-at', normalized);
   }
 
   async fillExpiryDate(value) {
-    await this.page.fill('#voucher-expire-at', value);
+    // type="date" expects YYYY-MM-DD, no T
+    const normalized = value.replace('T', '-').substring(0, 10);
+    this._savedExpiryDate = normalized;
+    await this._setReactValue('#voucher-expire-at', normalized);
   }
 
   async clickCreateVoucher() {
-    await this.page.click('button:has-text("Create Voucher")');
+    // Atomically fill any empty dates + submit to prevent React from clearing them
+    await this.page.evaluate(
+      ([start, expiry]) => {
+        const ns = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        const s = document.querySelector('#voucher-start-at');
+        const e = document.querySelector('#voucher-expire-at');
+        if (s && !s.value && start) { ns.call(s, start); s.dispatchEvent(new Event('input', { bubbles: true })); }
+        if (e && !e.value && expiry) { ns.call(e, expiry); e.dispatchEvent(new Event('input', { bubbles: true })); }
+        Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('Create Voucher'))?.click();
+      },
+      [this._savedStartDate, this._savedExpiryDate]
+    );
   }
 
   async clickSaveVoucher() {
-    await this.page.click('button:has-text("Save Voucher")');
+    // Edit page uses "Save Changes" or "Update Voucher"
+    await this.page.click('button:has-text("Save Voucher"), button:has-text("Save Changes"), button:has-text("Update Voucher")');
   }
 
   async clickCancel() {
