@@ -58,35 +58,34 @@ class ClubsPage {
 
   // --- Form ---
   async fillName(value) {
-    await this.page.fill('#name', value);
+    await this.page.fill('#club-name', value);
   }
 
-  async fillDescription(value) {
-    const desc = this.page.locator('#description, textarea#description, [placeholder*="Description"]');
-    await desc.fill(value);
+  async fillShortName(value) {
+    await this.page.fill('#club-short-name', value);
+  }
+
+  async fillClubCode(value) {
+    await this.page.fill('#club-code', value);
   }
 
   async fillLogoUrl(value) {
-    await this.page.fill('#logo-url', value);
-  }
-
-  async fillWebsite(value) {
-    await this.page.fill('#website', value);
-  }
-
-  async setActive(checked) {
-    const cb = this.page.locator('#active, input[type="checkbox"]').first();
-    if (checked !== await cb.isChecked()) {
-      await cb.click();
-    }
-  }
-
-  async fillFoundedYear(value) {
-    await this.page.fill('#founded-year', value);
+    await this.page.fill('#club-logo', value);
   }
 
   async fillStadium(value) {
-    await this.page.fill('#stadium', value);
+    await this.page.fill('#club-stadium', value);
+  }
+
+  async fillStadiumUrl(value) {
+    await this.page.fill('#club-stadium-url', value);
+  }
+
+  async setActive(checked) {
+    const cb = this.page.locator('input[type="checkbox"]').first();
+    if (checked !== await cb.isChecked()) {
+      await cb.click();
+    }
   }
 
   async clickCreateClub() {

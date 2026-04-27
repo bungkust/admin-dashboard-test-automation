@@ -67,50 +67,57 @@ class AdminUsersPage {
 
   // --- Form fields ---
   async fillFullName(value) {
-    await this.page.fill('#full-name, input[name="fullName"]', value);
+    await this.page.fill('#fullName', value);
   }
 
   async fillEmail(value) {
-    await this.page.fill('#email, input[name="email"]', value);
+    await this.page.fill('#email', value);
   }
 
   async fillPassword(value) {
-    await this.page.fill('#password, input[name="password"]', value);
+    await this.page.fill('#password', value);
   }
 
   async fillConfirmPassword(value) {
-    await this.page.fill('#confirm-password, input[name="confirmPassword"]', value);
+    await this.page.fill('#confirmPassword', value);
   }
 
   async selectRole(role) {
     // role options: Administrator, Super Administrator
-    await this.page.selectOption('#role, select[name="role"]', role);
+    await this.page.selectOption('#role', role);
   }
 
   async selectGender(gender) {
     // gender options: Male, Female, Other
-    await this.page.selectOption('#gender, select[name="gender"]', gender);
+    await this.page.selectOption('#gender', { label: gender });
   }
 
   async fillDateOfBirth(value) {
-    await this.page.fill('#dob, #date-of-birth, input[name="dob"], input[name="dateOfBirth"]', value);
+    await this.page.fill('#dob', value);
+  }
+
+  async fillPhone(value) {
+    await this.page.fill('#phone', value);
+  }
+
+  async selectProvince(value) {
+    await this.page.selectOption('#province', { label: value });
+  }
+
+  async selectCity(value) {
+    await this.page.selectOption('#city', { label: value });
+  }
+
+  async fillDeviceToken(value) {
+    await this.page.fill('#deviceToken', value);
   }
 
   async fillAvatarUrl(value) {
-    await this.page.fill('#avatar-url, #avatarUrl, input[name="avatarUrl"]', value);
+    await this.page.fill('#avatar', value);
   }
 
-  async fillProvince(value) {
-    await this.page.fill('#province, input[name="province"]', value);
-  }
-
-  async fillCity(value) {
-    await this.page.fill('#city, input[name="city"]', value);
-  }
-
-  async selectStatus(status) {
-    // status options: Active, Inactive
-    await this.page.selectOption('#status, select[name="status"]', status);
+  async fillParentId(value) {
+    await this.page.fill('#parentId', value);
   }
 
   async clickCreateUser() {

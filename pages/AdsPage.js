@@ -58,46 +58,46 @@ class AdsPage {
 
   // --- Form ---
   async fillTitle(value) {
-    await this.page.fill('#title', value);
+    await this.page.fill('#ad-title', value);
   }
 
   async selectAdType(type) {
-    // type options: Banner, Interstitial, Rewarded, Native, Splash
+    // type options: Banner, Interstitial, Rewarded, Native, Reels
     await this.page.selectOption('#ad-type', type);
   }
 
   async selectAdProvider(provider) {
-    // provider options: AdMob, Facebook, Unity
+    // provider options: AdMob, Custom, Direct
     await this.page.selectOption('#ad-provider', provider);
   }
 
   async selectPlatform(platform) {
-    // platform options: Android, iOS, Web, All
-    await this.page.selectOption('#platform', platform);
+    // platform options: Android, iOS, Web, All Platforms
+    await this.page.selectOption('#ad-platform', platform);
   }
 
   async fillDestinationUrl(value) {
-    await this.page.fill('#destination-url', value);
+    await this.page.fill('#ad-destination-url', value);
   }
 
   async fillImageUrl(value) {
-    await this.page.fill('#image-url', value);
+    await this.page.fill('#ad-image-url', value);
   }
 
   async fillPriority(value) {
-    await this.page.fill('#priority', String(value));
+    await this.page.fill('#ad-priority', String(value));
   }
 
   async fillStartDate(value) {
-    await this.page.fill('#start-date', value);
+    await this.page.fill('#ad-start-date', value);
   }
 
   async fillEndDate(value) {
-    await this.page.fill('#end-date', value);
+    await this.page.fill('#ad-end-date', value);
   }
 
   async setOpenInAppWebview(checked) {
-    const cb = this.page.locator('#open-in-app-webview, input[type="checkbox"]').first();
+    const cb = this.page.locator('#ad-webview-open, input[type="checkbox"]').first();
     if (checked !== await cb.isChecked()) {
       await cb.click();
     }

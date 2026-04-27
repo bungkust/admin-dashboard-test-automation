@@ -44,7 +44,7 @@ test.describe('Merchant Voucher', () => {
     const merchantVoucherPage = new MerchantVoucherPage(loggedInPage);
     await merchantVoucherPage.clickNewVoucher();
     await merchantVoucherPage.expectUrl(/\/merchant-vouchers\/new/);
-    await expect(loggedInPage.locator('#title')).toBeVisible();
+    await expect(loggedInPage.locator('#voucher-title')).toBeVisible();
   });
 
   test('TC-MV-006 - Navigate to edit voucher page', async ({ loggedInPage }) => {
@@ -244,7 +244,7 @@ test.describe('Merchant Voucher', () => {
     const count = await rows.count();
     if (count > 0) {
       await merchantVoucherPage.clickEdit(rows.first());
-      await loggedInPage.locator('#title').clear();
+      await loggedInPage.locator('#voucher-title').clear();
       await merchantVoucherPage.clickSaveVoucher();
       await merchantVoucherPage.expectValidationError();
     }

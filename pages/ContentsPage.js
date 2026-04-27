@@ -76,20 +76,20 @@ class ContentsPage {
   }
 
   async fillBody(value) {
-    const body = this.page.locator('#body, textarea#body, [placeholder*="Body"]');
+    const body = this.page.locator('[contenteditable]').first();
     await body.fill(value);
   }
 
   async fillMediaUrl(value) {
-    await this.page.fill('#media-url', value);
+    await this.page.fill('#mediaUrl', value);
   }
 
   async fillAuthorName(value) {
-    await this.page.fill('#author-name', value);
+    await this.page.fill('#authorName', value);
   }
 
   async fillPublishedAt(value) {
-    await this.page.fill('#published-at', value);
+    await this.page.fill('#publishedAt', value);
   }
 
   async clickCreateContent() {

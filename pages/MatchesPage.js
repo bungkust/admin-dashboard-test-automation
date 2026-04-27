@@ -58,44 +58,51 @@ class MatchesPage {
 
   // --- Form ---
   async fillCompetition(value) {
-    const select = this.page.locator('#competition, select[id="competition"]');
-    await select.selectOption({ label: value });
+    await this.page.selectOption('#match-competition', { label: value });
+  }
+
+  async fillStatus(value) {
+    await this.page.selectOption('#match-status', { label: value });
   }
 
   async fillHomeClub(value) {
-    await this.page.fill('#home-club, #homeClub, input[id="homeClub"]', value);
+    await this.page.selectOption('#match-home-club', { label: value });
   }
 
   async fillAwayClub(value) {
-    await this.page.fill('#away-club, #awayClub, input[id="awayClub"]', value);
+    await this.page.selectOption('#match-away-club', { label: value });
   }
 
   async fillStartTime(value) {
-    await this.page.fill('#start-time, #startTime, input[id="startTime"]', value);
+    await this.page.fill('#match-start-time', value);
   }
 
   async fillTimezone(value) {
-    await this.page.fill('#timezone, select[id="timezone"], input[id="timezone"]', value);
+    await this.page.selectOption('#match-timezone', { label: value });
   }
 
   async fillLocation(value) {
-    await this.page.fill('#location, input[id="location"]', value);
+    await this.page.fill('#match-location', value);
   }
 
   async fillStage(value) {
-    await this.page.fill('#stage, input[id="stage"]', value);
+    await this.page.fill('#match-stage', value);
+  }
+
+  async fillEvent(value) {
+    await this.page.selectOption('#match-event', { label: value });
   }
 
   async fillHomeScore(value) {
-    await this.page.fill('#home-score, #homeScore, input[id="homeScore"]', value);
+    await this.page.fill('#match-home-score', value);
   }
 
   async fillAwayScore(value) {
-    await this.page.fill('#away-score, #awayScore, input[id="awayScore"]', value);
+    await this.page.fill('#match-away-score', value);
   }
 
   async fillMetaJson(value) {
-    await this.page.fill('#meta-json, #metaJson, textarea[id="metaJson"]', value);
+    await this.page.fill('#match-meta', value);
   }
 
   async clickCreateMatch() {

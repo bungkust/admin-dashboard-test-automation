@@ -58,31 +58,38 @@ class MerchantVoucherPage {
 
   // --- Form ---
   async fillTitle(value) {
-    await this.page.fill('#title', value);
+    await this.page.fill('#voucher-title', value);
   }
 
   async fillDescription(value) {
-    const desc = this.page.locator('#description, textarea#description, [placeholder*="Description"]');
-    await desc.fill(value);
+    await this.page.fill('#voucher-description', value);
+  }
+
+  async fillGuideline(value) {
+    await this.page.fill('#voucher-guideline', value);
+  }
+
+  async fillTermCondition(value) {
+    await this.page.fill('#voucher-term-condition', value);
   }
 
   async fillBannerUrl(value) {
-    await this.page.fill('#banner-url', value);
+    await this.page.fill('#voucher-banner', value);
   }
 
   async setActive(checked) {
-    const cb = this.page.locator('#active, input[type="checkbox"]').first();
+    const cb = this.page.locator('#voucher-is-active, input[type="checkbox"]').first();
     if (checked !== await cb.isChecked()) {
       await cb.click();
     }
   }
 
   async fillStartDate(value) {
-    await this.page.fill('#start-date', value);
+    await this.page.fill('#voucher-start-at', value);
   }
 
   async fillExpiryDate(value) {
-    await this.page.fill('#expiry-date', value);
+    await this.page.fill('#voucher-expire-at', value);
   }
 
   async clickCreateVoucher() {
