@@ -16,13 +16,13 @@ test.describe('Contents Module', () => {
 
   test('TC-CONTENT-002 - Search content by title', async ({ page }) => {
     const contentsPage = new ContentsPage(page);
-    await contentsPage.search('Test');
-    await expect(page.locator('table')).toContainText('Test');
+    await contentsPage.search('Kelme');
+    await expect(page.locator('table')).toContainText('Kelme');
   });
 
   test('TC-CONTENT-003 - Clear search returns all contents', async ({ page }) => {
     const contentsPage = new ContentsPage(page);
-    await contentsPage.search('Test');
+    await contentsPage.search('Kelme');
     await contentsPage.clearSearch();
     await expect(page.locator('table')).toBeVisible();
   });

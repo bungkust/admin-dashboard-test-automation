@@ -23,15 +23,18 @@ class ContentsPage {
   }
 
   async search(term) {
-    const input = this.page.locator('input[placeholder*="Search"], input[type="search"]').first();
+    const input = this.page.locator('main input[placeholder*="Search"], main input[type="search"], main [role="searchbox"]').first();
     await input.clear();
     await input.fill(term);
     await input.press('Enter');
+    await this.page.waitForLoadState('networkidle').catch(() => {});
+    await this.page.waitForTimeout(1000);
   }
 
   async clearSearch() {
-    const input = this.page.locator('input[type="search"], input[placeholder*="Search"]').first();
+    const input = this.page.locator('main input[type="search"], main input[placeholder*="Search"], main [role="searchbox"]').first();
     await input.clear();
+    await input.press('Enter');
   }
 
   async filterByType(type) {
@@ -73,11 +76,17 @@ class ContentsPage {
   }
 
   async selectType(type) {
-    await this.page.selectOption('#type', type);
+    // Try standard select first, then fallback to clicking the combobox
+    try {
+      await this.page.selectOption('#type', type, { timeout: 2000 });
+    } catch (e) {
+      await this.page.locator('#type, [role="combobox"]').first().click();
+      await this.page.locator(`[role="option"]:has-text("${type}"), text="${type}"`).first().click();
+    }
   }
 
   async fillBody(value) {
-    const body = this.page.locator('[contenteditable]').first();
+    const body = this.page.locator('.ql-editor, [contenteditable]').first();
     await body.fill(value);
   }
 
@@ -90,16 +99,24 @@ class ContentsPage {
   }
 
   async fillPublishedAt(value) {
-    const normalized = value.replace(' ', 'T');
-    await this.page.fill('#publishedAt', normalized);
+    // input is type="datetime-local", requires yyyy-MM-ddThh:mm
+    let formatted = value;
+    if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      formatted = `${value}T12:00`; // Default to noon if no time provided
+    } else if (value.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/)) {
+      formatted = value.replace(' ', 'T');
+    }
+    
+    const input = this.page.locator('#publishedAt, [placeholder*="Published"]').first();
+    await input.fill(formatted);
   }
 
   async clickCreateContent() {
-    await this.page.click('button:has-text("Create Content")');
+    await this.page.click('button:has-text("Create Content"), button:has-text("Save Content")');
   }
 
   async clickSaveContent() {
-    await this.page.click('button:has-text("Update Content")');
+    await this.page.click('button:has-text("Update Content"), button:has-text("Save Content")');
   }
 
   async clickCancel() {
