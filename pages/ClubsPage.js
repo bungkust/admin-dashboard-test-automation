@@ -108,8 +108,7 @@ class ClubsPage {
   }
 
   async clickCreateClub() {
-    // Use JS click because browser needs to trigger form submit event
-    await this.page.locator('button:has-text("Create Club")').first().evaluate(el => el.click());
+    await this.page.locator('button:has-text("Create Club")').click();
   }
 
   async clickSaveClub() {
