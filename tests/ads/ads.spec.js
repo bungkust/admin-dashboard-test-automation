@@ -9,6 +9,7 @@ test.describe('Ads Module', () => {
     test.beforeEach(async ({ page }) => {
       const adsPage = new AdsPage(page);
       await adsPage.gotoNew();
+      await adsPage.waitForForm();
     });
 
     test('TC-ADS-001 - Create ad with valid data', async ({ page }) => {
@@ -275,6 +276,7 @@ test.describe('Ads Module', () => {
       await adsPage.goto();
       // Create a test ad to edit
       await adsPage.clickNewAd();
+      await adsPage.waitForForm();
       await adsPage.fillTitle('Ad To Edit');
       await adsPage.selectAdType('Banner');
       await adsPage.selectAdProvider('AdMob');

@@ -23,9 +23,10 @@ class AdsPage {
   }
 
   async search(term) {
-    const input = this.page.locator('input[type="search"], input[placeholder*="Search"]').first();
+    const input = this.page.locator('input[placeholder*="Search"], input[type="search"]').first();
     await input.clear();
     await input.fill(term);
+    await input.press('Enter');
   }
 
   async clickFilter() {
@@ -57,7 +58,12 @@ class AdsPage {
   }
 
   // --- Form ---
+  async waitForForm() {
+    await this.page.waitForSelector('#ad-title', { timeout: 15000 });
+  }
+
   async fillTitle(value) {
+    await this.page.waitForSelector('#ad-title', { timeout: 15000 });
     await this.page.fill('#ad-title', value);
   }
 
@@ -89,11 +95,13 @@ class AdsPage {
   }
 
   async fillStartDate(value) {
-    await this.page.fill('#ad-start-date', value);
+    const normalized = value.replace(' ', 'T');
+    await this.page.fill('#ad-start-date', normalized);
   }
 
   async fillEndDate(value) {
-    await this.page.fill('#ad-end-date', value);
+    const normalized = value.replace(' ', 'T');
+    await this.page.fill('#ad-end-date', normalized);
   }
 
   async setOpenInAppWebview(checked) {
@@ -108,7 +116,7 @@ class AdsPage {
   }
 
   async clickSaveAd() {
-    await this.page.click('button:has-text("Save Ad")');
+    await this.page.click('button:has-text("Save Changes")');
   }
 
   async clickCancel() {
