@@ -74,11 +74,21 @@ class MatchesPage {
   }
 
   async fillStartTime(value) {
-    await this.page.fill('#match-start-time', value);
+    // value format: 'YYYY-MM-DDTHH:mm' for datetime-local
+    const normalized = value.replace(' ', 'T');
+    await this.page.fill('#match-start-time', normalized);
   }
 
   async fillTimezone(value) {
-    await this.page.selectOption('#match-timezone', { label: value });
+    // Map common timezone names to dropdown labels
+    const map = {
+      'Asia/Jakarta': 'WIB (Jakarta, GMT+7)',
+      'Asia/Makassar': 'WITA (Makassar, GMT+8)',
+      'Asia/Jayapura': 'WIT (Jayapura, GMT+9)',
+      'UTC': 'UTC (GMT+0)',
+    };
+    const label = map[value] || value;
+    await this.page.selectOption('#match-timezone', { label });
   }
 
   async fillLocation(value) {
