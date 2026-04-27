@@ -227,6 +227,7 @@ test.describe('Clubs', () => {
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
       await clubsPage.fillName('Updated Club Name');
+      await clubsPage.fillStadium('Test Stadium');
       await clubsPage.clickSaveClub();
       await clubsPage.expectInTable('Updated Club Name');
     }
@@ -239,6 +240,7 @@ test.describe('Clubs', () => {
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
       await clubsPage.fillName('Updated Club Description Field');
+      await clubsPage.fillStadium('Test Stadium');
       await clubsPage.clickSaveClub();
       await clubsPage.expectInTable('Updated Club Description Field');
     }
@@ -251,6 +253,7 @@ test.describe('Clubs', () => {
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
       await clubsPage.fillLogoUrl('https://example.com/updated-logo.png');
+      await clubsPage.fillStadium('Test Stadium');
       await clubsPage.clickSaveClub();
       await clubsPage.expectUrl(/\/clubs/);
     }
@@ -263,6 +266,7 @@ test.describe('Clubs', () => {
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
       await clubsPage.setActive(false);
+      await clubsPage.fillStadium('Test Stadium');
       await clubsPage.clickSaveClub();
       await clubsPage.expectUrl(/\/clubs/);
     }
@@ -302,7 +306,7 @@ test.describe('Clubs', () => {
     const count = await rows.count();
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
-      await expect(page.locator('button:has-text("Save Club"), button:has-text("Create Club")')).toBeVisible();
+      await expect(page.locator('button:has-text("Update Club")')).toBeVisible();
     }
   });
 
@@ -315,6 +319,7 @@ test.describe('Clubs', () => {
       await clubsPage.fillName('Multi Updated Club');
       await clubsPage.fillLogoUrl('https://example.com/multi.png');
       await clubsPage.setActive(false);
+      await clubsPage.fillStadium('Test Stadium');
       await clubsPage.clickSaveClub();
       await clubsPage.expectInTable('Multi Updated Club');
     }
