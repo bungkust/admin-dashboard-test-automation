@@ -65,21 +65,35 @@ class AdminUsersPage {
     await this.page.click('button:has-text("Previous"), button:has-text("←")');
   }
 
-  // --- Form fields ---
+  // --- Form fields (React controlled — use JS fill) ---
+  async _setReactValue(selector, value) {
+    await this.page.waitForSelector(selector, { timeout: 10000 });
+    await this.page.evaluate(
+      ([sel, val]) => {
+        const el = document.querySelector(sel);
+        const native = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        native.call(el, val);
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      },
+      [selector, value]
+    );
+  }
+
   async fillFullName(value) {
-    await this.page.fill('#fullName', value);
+    await this._setReactValue('#fullName', value);
   }
 
   async fillEmail(value) {
-    await this.page.fill('#email', value);
+    await this._setReactValue('#email', value);
   }
 
   async fillPassword(value) {
-    await this.page.fill('#password', value);
+    await this._setReactValue('#password', value);
   }
 
   async fillConfirmPassword(value) {
-    await this.page.fill('#confirmPassword', value);
+    await this._setReactValue('#confirmPassword', value);
   }
 
   async selectRole(role) {
@@ -93,11 +107,13 @@ class AdminUsersPage {
   }
 
   async fillDateOfBirth(value) {
-    await this.page.fill('#dob', value);
+    // type="date" expects YYYY-MM-DD
+    const normalized = value.replace('T', '-').substring(0, 10);
+    await this._setReactValue('#dob', normalized);
   }
 
   async fillPhone(value) {
-    await this.page.fill('#phone', value);
+    await this._setReactValue('#phone', value);
   }
 
   async selectProvince(value) {
@@ -109,23 +125,23 @@ class AdminUsersPage {
   }
 
   async fillDeviceToken(value) {
-    await this.page.fill('#deviceToken', value);
+    await this._setReactValue('#deviceToken', value);
   }
 
   async fillAvatarUrl(value) {
-    await this.page.fill('#avatar', value);
+    await this._setReactValue('#avatar', value);
   }
 
   async fillParentId(value) {
-    await this.page.fill('#parentId', value);
+    await this._setReactValue('#parentId', value);
   }
 
   async clickCreateUser() {
-    await this.page.click('button:has-text("Create User"), button:has-text("Create")');
+    await this.page.click('button:has-text("Create Admin User"), button:has-text("Create User")');
   }
 
   async clickSaveUser() {
-    await this.page.click('button:has-text("Save User"), button:has-text("Save")');
+    await this.page.click('button:has-text("Save User"), button:has-text("Save Changes"), button:has-text("Update User")');
   }
 
   async clickCancel() {
