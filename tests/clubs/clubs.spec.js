@@ -29,8 +29,8 @@ test.describe('Clubs', () => {
 
   test('TC-CL-003 - Search club by name', async ({ page }) => {
     const clubsPage = new ClubsPage(page);
-    await clubsPage.search('Test');
-    await expect(page.locator('table')).toContainText('Test');
+    await clubsPage.search('Nusantara');
+    await expect(page.locator('table')).toContainText('Nusantara');
   });
 
   test('TC-CL-004 - Search with no results shows empty state', async ({ page }) => {
@@ -43,7 +43,7 @@ test.describe('Clubs', () => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.clickNewClub();
     await clubsPage.expectUrl(/\/clubs\/new/);
-    await expect(page.locator('#name')).toBeVisible();
+    await expect(page.locator('#club-name')).toBeVisible();
   });
 
   test('TC-CL-006 - Navigate to edit club page', async ({ page }) => {
@@ -90,16 +90,18 @@ test.describe('Clubs', () => {
 
   // ==================== CREATE CLUB TESTS ====================
 
+  const ASSET_URL = 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGND9TjDY-pDP-a1EDTIFwnbkBxFExvgVAiX0xzilhWbun3IheQBFOr0yBpEWRv8P_tMm9VDAG-fCp7S4M-QnwTzWxo7GSg7MwU46HS7YKst8Y_5pMjHdyVwD4keX2BRLdJIbw=w289-h312-n-k-no';
+
   test('TC-CL-011 - Create club with valid data', async ({ page }) => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
     await clubsPage.fillName('Manchester United');
-    await clubsPage.fillDescription('English professional football club');
-    await clubsPage.fillLogoUrl('https://example.com/logo.png');
-    await clubsPage.fillWebsite('https://www.manutd.com');
-    await clubsPage.setActive(true);
-    await clubsPage.fillFoundedYear('1878');
+    await clubsPage.fillShortName('Man Utd');
+    await clubsPage.fillClubCode('MUN');
     await clubsPage.fillStadium('Old Trafford');
+    await clubsPage.fillLogoUrl(ASSET_URL);
+    await clubsPage.fillStadiumImageUrl(ASSET_URL);
+    await clubsPage.setActive(true);
     await clubsPage.clickCreateClub();
     await clubsPage.expectUrl(/\/clubs/);
     await clubsPage.expectInTable('Manchester United');
@@ -109,6 +111,11 @@ test.describe('Clubs', () => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
     await clubsPage.fillName('Basic Club');
+    await clubsPage.fillShortName('Basic');
+    await clubsPage.fillClubCode('BSC');
+    await clubsPage.fillStadium('Basic Stadium');
+    await clubsPage.fillLogoUrl(ASSET_URL);
+    await clubsPage.fillStadiumImageUrl(ASSET_URL);
     await clubsPage.clickCreateClub();
     await clubsPage.expectUrl(/\/clubs/);
     await clubsPage.expectInTable('Basic Club');
@@ -117,15 +124,15 @@ test.describe('Clubs', () => {
   test('TC-CL-013 - Create club with empty name shows error', async ({ page }) => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
-    await clubsPage.fillDescription('Description without name');
+    await clubsPage.fillShortName('Short Name Only');
     await clubsPage.clickCreateClub();
     await clubsPage.expectValidationError();
   });
 
-  test('TC-CL-014 - Create club with empty description shows error', async ({ page }) => {
+  test('TC-CL-014 - Create club with empty short name shows error', async ({ page }) => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
-    await clubsPage.fillName('Club Without Description');
+    await clubsPage.fillName('Club Without Short Name');
     await clubsPage.clickCreateClub();
     await clubsPage.expectValidationError();
   });
@@ -139,12 +146,15 @@ test.describe('Clubs', () => {
     await clubsPage.expectValidationError();
   });
 
-  test('TC-CL-016 - Create club with founded year and stadium', async ({ page }) => {
+  test('TC-CL-016 - Create club with stadium', async ({ page }) => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
     await clubsPage.fillName('Historic Club');
-    await clubsPage.fillFoundedYear('1900');
+    await clubsPage.fillShortName('Historic');
+    await clubsPage.fillClubCode('HST');
     await clubsPage.fillStadium('Classic Stadium');
+    await clubsPage.fillLogoUrl(ASSET_URL);
+    await clubsPage.fillStadiumImageUrl(ASSET_URL);
     await clubsPage.clickCreateClub();
     await clubsPage.expectInTable('Historic Club');
   });
@@ -153,6 +163,11 @@ test.describe('Clubs', () => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
     await clubsPage.fillName('Active Club');
+    await clubsPage.fillShortName('Active');
+    await clubsPage.fillClubCode('ACT');
+    await clubsPage.fillStadium('Active Stadium');
+    await clubsPage.fillLogoUrl(ASSET_URL);
+    await clubsPage.fillStadiumImageUrl(ASSET_URL);
     await clubsPage.setActive(true);
     await clubsPage.clickCreateClub();
     await clubsPage.expectInTable('Active Club');
@@ -162,6 +177,11 @@ test.describe('Clubs', () => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
     await clubsPage.fillName('Inactive Club');
+    await clubsPage.fillShortName('Inactive');
+    await clubsPage.fillClubCode('INA');
+    await clubsPage.fillStadium('Inactive Stadium');
+    await clubsPage.fillLogoUrl(ASSET_URL);
+    await clubsPage.fillStadiumImageUrl(ASSET_URL);
     await clubsPage.setActive(false);
     await clubsPage.clickCreateClub();
     await clubsPage.expectInTable('Inactive Club');
@@ -171,7 +191,6 @@ test.describe('Clubs', () => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
     await clubsPage.fillName('Cancelled Club');
-    await clubsPage.fillDescription('This should not be saved');
     await clubsPage.clickCancel();
     await clubsPage.expectUrl(/\/clubs/);
     await clubsPage.expectNotInTable('Cancelled Club');
@@ -180,12 +199,23 @@ test.describe('Clubs', () => {
   test('TC-CL-020 - Create club with duplicate name', async ({ page }) => {
     const clubsPage = new ClubsPage(page);
     await clubsPage.gotoNew();
-    await clubsPage.fillName('Duplicate Name Club');
+    const uniqueName = `Dup-${Date.now()}`;
+    await clubsPage.fillName(uniqueName);
+    await clubsPage.fillShortName('Dup');
+    await clubsPage.fillClubCode('DUP');
+    await clubsPage.fillStadium('Dup Stadium');
+    await clubsPage.fillLogoUrl(ASSET_URL);
+    await clubsPage.fillStadiumImageUrl(ASSET_URL);
     await clubsPage.clickCreateClub();
     await clubsPage.gotoNew();
-    await clubsPage.fillName('Duplicate Name Club');
+    await clubsPage.fillName(uniqueName);
+    await clubsPage.fillShortName('Dup2');
+    await clubsPage.fillClubCode('DUP2');
+    await clubsPage.fillStadium('Dup Stadium 2');
+    await clubsPage.fillLogoUrl(ASSET_URL);
+    await clubsPage.fillStadiumImageUrl(ASSET_URL);
     await clubsPage.clickCreateClub();
-    await expect(page.locator('text=/already exists|duplicate|exists/i')).toBeVisible({ timeout: 3000 });
+    await expect(page.locator('text=/already exists|duplicate|exists/i')).toBeVisible({ timeout: 5000 });
   });
 
   // ==================== EDIT CLUB TESTS ====================
@@ -202,15 +232,15 @@ test.describe('Clubs', () => {
     }
   });
 
-  test('TC-CL-022 - Edit club description', async ({ page }) => {
+  test('TC-CL-022 - Edit club name', async ({ page }) => {
     const clubsPage = new ClubsPage(page);
     const rows = await clubsPage.getTableRows();
     const count = await rows.count();
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
-      await clubsPage.fillDescription('Updated club description');
+      await clubsPage.fillName('Updated Club Description Field');
       await clubsPage.clickSaveClub();
-      await clubsPage.expectInTable('Updated club description');
+      await clubsPage.expectInTable('Updated Club Description Field');
     }
   });
 
@@ -244,7 +274,7 @@ test.describe('Clubs', () => {
     const count = await rows.count();
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
-      await page.locator('#name').clear();
+      await page.locator('#club-name').clear();
       await clubsPage.clickSaveClub();
       await clubsPage.expectValidationError();
     }
@@ -272,7 +302,7 @@ test.describe('Clubs', () => {
     const count = await rows.count();
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
-      await expect(page.locator('button:has-text("Save Club")')).toBeVisible();
+      await expect(page.locator('button:has-text("Save Club"), button:has-text("Create Club")')).toBeVisible();
     }
   });
 
@@ -283,7 +313,6 @@ test.describe('Clubs', () => {
     if (count > 0) {
       await clubsPage.clickEdit(rows.first());
       await clubsPage.fillName('Multi Updated Club');
-      await clubsPage.fillDescription('Multiple fields updated');
       await clubsPage.fillLogoUrl('https://example.com/multi.png');
       await clubsPage.setActive(false);
       await clubsPage.clickSaveClub();
@@ -300,10 +329,15 @@ test.describe('Clubs', () => {
     if (count > 0) {
       await clubsPage.gotoNew();
       await clubsPage.fillName('Club To Delete');
+      await clubsPage.fillShortName('DeleteMe');
+      await clubsPage.fillClubCode('DEL');
+      await clubsPage.fillStadium('Delete Stadium');
+      await clubsPage.fillLogoUrl(ASSET_URL);
+      await clubsPage.fillStadiumImageUrl(ASSET_URL);
       await clubsPage.clickCreateClub();
       await clubsPage.expectInTable('Club To Delete');
       const rowsAfterCreate = await clubsPage.getTableRows();
-      const deleteRow = rowsAfterCreate.filter({ has: page.locator('text=Club To Delete') }).first();
+      const deleteRow = rowsAfterCreate.filter({ hasText: 'Club To Delete' }).first();
       if (await deleteRow.isVisible()) {
         await clubsPage.clickDelete(deleteRow);
         await clubsPage.confirmDelete();

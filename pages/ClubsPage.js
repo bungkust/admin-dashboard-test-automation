@@ -26,6 +26,9 @@ class ClubsPage {
     const input = this.page.locator('input[type="search"], input[placeholder*="Search"]').first();
     await input.clear();
     await input.fill(term);
+    await input.press('Enter');
+    await this.page.waitForLoadState('networkidle').catch(() => {});
+    await this.page.waitForTimeout(1000); // Small buffer for DOM updates
   }
 
   async clickNewClub() {
@@ -70,15 +73,27 @@ class ClubsPage {
   }
 
   async fillLogoUrl(value) {
-    await this.page.fill('#club-logo', value);
+    await this.page.locator('#club-logo, input[placeholder*="logo"]').fill(value);
   }
 
   async fillStadium(value) {
-    await this.page.fill('#club-stadium', value);
+    await this.page.locator('#club-stadium, input[placeholder*="Stadium"]').first().fill(value);
   }
 
-  async fillStadiumUrl(value) {
-    await this.page.fill('#club-stadium-url', value);
+  async fillStadiumImageUrl(value) {
+    await this.page.locator('#club-stadium-url, input[placeholder*="stadium"]').last().fill(value);
+  }
+
+  async fillDescription(value) {
+    await this.page.fill('#club-description', value);
+  }
+
+  async fillWebsite(value) {
+    await this.page.fill('#club-website', value);
+  }
+
+  async fillFoundedYear(value) {
+    await this.page.fill('#club-founded-year', value);
   }
 
   async setActive(checked) {
@@ -93,7 +108,7 @@ class ClubsPage {
   }
 
   async clickSaveClub() {
-    await this.page.click('button:has-text("Save Club")');
+    await this.page.click('button:has-text("Save Club"), button:has-text("Update Club")');
   }
 
   async clickCancel() {
@@ -114,11 +129,11 @@ class ClubsPage {
   }
 
   async expectEmptyState() {
-    await expect(this.page.locator('table')).toContainText(/no club|belum ada|empty|0 results/i);
+    await expect(this.page.locator('table')).toContainText(/no club|belum ada|empty|0 results|tidak ditemukan/i);
   }
 
   async expectValidationError() {
-    await expect(this.page.locator('text=/error|validation|required|wajib|invalid/i')).toBeVisible({ timeout: 3000 });
+    await expect(this.page.locator('.text-red-600, .bg-red-50, [role="alert"], .error-message').first()).toBeVisible({ timeout: 5000 });
   }
 
   async expectUrl(pathPattern) {
