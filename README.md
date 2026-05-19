@@ -1,6 +1,6 @@
 # Admin Dashboard Test Automation
 
-Playwright-based automated testing for the Persib Admin Dashboard (https://dashboard-stg.psb.pixlebyte.com).
+Playwright-based automated testing for the Persib Admin Dashboard (https://dashboard.stg.persib.co.id).
 
 ## Modules Covered
 
@@ -42,7 +42,7 @@ cp .env.example .env
 |----------|---------|
 | `TEST_EMAIL` | `nureko@pixlebyte.com` |
 | `TEST_PASSWORD` | `Abcd1234` |
-| `BASE_URL` | `https://dashboard-stg.psb.pixlebyte.com` |
+| `BASE_URL` | `https://dashboard.stg.persib.co.id` |
 
 ## Project Structure
 

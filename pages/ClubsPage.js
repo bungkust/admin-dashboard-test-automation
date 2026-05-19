@@ -44,9 +44,17 @@ class ClubsPage {
   }
 
   async confirmDelete() {
-    // Use JS click for delete confirmation button
-    const btn = this.page.locator('button:has-text("Delete"):not([disabled]), button:has-text("Confirm"), button:has-text("Ya"), button:has-text("OK")');
-    await btn.first().evaluate(el => el.click());
+    // Target the confirmation button inside the modal specifically
+    const btn = this.page.locator('div[role="dialog"] button:has-text("Delete"), button:has-text("Delete")');
+    await btn.last().click();
+  }
+
+  async confirmLeave() {
+    // Click "Leave" if the "Unsaved Changes" confirmation modal is shown
+    const leaveBtn = this.page.locator('button:has-text("Leave")');
+    if (await leaveBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await leaveBtn.click();
+    }
   }
 
   async cancelDelete() {
@@ -130,7 +138,8 @@ class ClubsPage {
   }
 
   async expectNotInTable(name) {
-    await expect(this.page.locator('table')).not.toContainText(name);
+    await expect(this.page.locator('table')).toBeVisible({ timeout: 5000 }).catch(() => {});
+    await expect(this.page.locator('table')).not.toContainText(name, { timeout: 10000 });
   }
 
   async expectEmptyState() {

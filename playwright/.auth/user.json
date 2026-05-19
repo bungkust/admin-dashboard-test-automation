@@ -1,0 +1,22 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "https://dashboard.stg.persib.co.id",
+      "localStorage": [
+        {
+          "name": "admin_token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51cmVrb0BwaXhsZWJ5dGUuY29tIiwidWlkIjoiMTg5ZDM2YzYzNTljM2YwYS1KR0ZGM0FLU01XUVdVMklMREdUQT09PT0iLCJmdWxsbmFtZSI6Im51cmVrbyAiLCJyb2xlcyI6WyJhZG1pbiJdLCJ0ZW5hbnRfaWQiOiJwc2IiLCJwZXJtaXNzaW9ucyI6eyJhZG1pbl91c2VyIjoicmVhZCxjcmVhdGUsdXBkYXRlLGRlbGV0ZSIsImFkcyI6InJlYWQsY3JlYXRlLHVwZGF0ZSxkZWxldGUiLCJjbHViIjoicmVhZCxjcmVhdGUsdXBkYXRlLGRlbGV0ZSIsImNvbXBldGl0aW9uIjoicmVhZCxjcmVhdGUsdXBkYXRlLGRlbGV0ZSIsImNvbnRlbnQiOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwiZG9jdW1lbnQiOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwibWF0Y2giOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwibWVtYmVyc2hpcCI6InJlYWQsY3JlYXRlLHVwZGF0ZSxkZWxldGUiLCJzdXJ2ZXkiOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwidXNlciI6InJlYWQsY3JlYXRlLHVwZGF0ZSxkZWxldGUifSwiaXNzIjoiYXV0aC1zZXJ2aWNlIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzc5MTY4MzU1LCJpYXQiOjE3NzkxNjQ3NTUsImp0aSI6ImQ4NXVja3BuN2w1czczZDJxMnBnIn0.riLHu_gZSW-s93olOIF3vPn9F0GU9kz5THi-b6P7Ufk"
+        },
+        {
+          "name": "admin_refresh_token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51cmVrb0BwaXhsZWJ5dGUuY29tIiwidWlkIjoiMTg5ZDM2YzYzNTljM2YwYS1KR0ZGM0FLU01XUVdVMklMREdUQT09PT0iLCJmdWxsbmFtZSI6Im51cmVrbyAiLCJyb2xlcyI6WyJhZG1pbiJdLCJ0ZW5hbnRfaWQiOiJwc2IiLCJwZXJtaXNzaW9ucyI6eyJhZG1pbl91c2VyIjoicmVhZCxjcmVhdGUsdXBkYXRlLGRlbGV0ZSIsImFkcyI6InJlYWQsY3JlYXRlLHVwZGF0ZSxkZWxldGUiLCJjbHViIjoicmVhZCxjcmVhdGUsdXBkYXRlLGRlbGV0ZSIsImNvbXBldGl0aW9uIjoicmVhZCxjcmVhdGUsdXBkYXRlLGRlbGV0ZSIsImNvbnRlbnQiOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwiZG9jdW1lbnQiOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwibWF0Y2giOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwibWVtYmVyc2hpcCI6InJlYWQsY3JlYXRlLHVwZGF0ZSxkZWxldGUiLCJzdXJ2ZXkiOiJyZWFkLGNyZWF0ZSx1cGRhdGUsZGVsZXRlIiwidXNlciI6InJlYWQsY3JlYXRlLHVwZGF0ZSxkZWxldGUifSwiaXNzIjoiYXV0aC1zZXJ2aWNlIiwic3ViIjoicmVmcmVzaF90b2tlbiIsImV4cCI6MTc4MTc1Njc1NSwiaWF0IjoxNzc5MTY0NzU1LCJqdGkiOiJkODV1Y2twbjdsNXM3M2QycTJxMCJ9.Bqf7kYSxOA3J-smQmMxMy3070N3RDRjQhoq_VCq-4_A"
+        },
+        {
+          "name": "admin_user",
+          "value": "{\"id\":\"189d36c6359c3f0a-JGFF3AKSMWQWU2ILDGTA====\",\"tenantId\":\"psb\",\"fullName\":\"nureko \",\"email\":\"nureko@pixlebyte.com\",\"isEmailVerified\":true,\"isActive\":true,\"gender\":\"male\",\"avatar\":\"\",\"city\":\"\",\"dob\":\"2011-04-13T00:00:00Z\",\"lastLoggedIn\":\"2026-03-16T04:07:33Z\",\"createdAt\":\"2026-03-16T04:07:33Z\",\"updatedAt\":\"2026-05-08T03:59:50Z\",\"roleSlug\":\"admin\",\"phone\":\"\",\"isProfileCompleted\":true,\"kycStatus\":\"unverified\"}"
+        }
+      ]
+    }
+  ]
+}

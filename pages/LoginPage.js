@@ -3,6 +3,9 @@ const { expect } = require('@playwright/test');
 class LoginPage {
   constructor(page) {
     this.page = page;
+    this.emailInput = page.locator('input[type="email"]');
+    this.passwordInput = page.locator('input[type="password"]');
+    this.submitBtn = page.locator('button[type="submit"]');
   }
 
   async goto() {
@@ -10,13 +13,13 @@ class LoginPage {
   }
 
   async login(email, password) {
-    await this.page.fill('input[type="email"]', email);
-    await this.page.fill('input[type="password"]', password);
-    await this.page.click('button[type="submit"]');
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+    await this.submitBtn.click();
   }
 
   async expectLoggedIn() {
-    await expect(this.page).toHaveURL('**/dashboard');
+    await expect(this.page).toHaveURL(/.*\/dashboard/);
   }
 }
 
